@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Путь Джедая: Недрочабрь 2026 (Fix Edition)</title>
+    <title>Путь Джедая: Недрочабрь 2026 (Guilds & Chat)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -17,7 +17,7 @@
         .glow-black { box-shadow: 0 0 20px rgba(75, 85, 99, 0.8); border: 1px solid #4b5563; }
         .glow-gold { box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
         .glow-admin { box-shadow: 0 0 25px rgba(236, 72, 153, 0.8); border: 1px solid #ec4899; }
-        /* Выделение выбранного меча */
+        .glow-shame { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); border: 1px solid #ef4444; }
         .sword-btn.selected { border-color: #3b82f6 !important; background-color: rgba(59, 130, 246, 0.15) !important; }
     </style>
 </head>
@@ -28,13 +28,13 @@
         <h1 class="font-orbitron text-3xl md:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-red-500">
             ПУТЬ ДЖЕДАЯ: НЕДРОЧАБРЬ
         </h1>
-        <p class="text-sm text-gray-400 mt-1">Fix Edition • Надежный вход без лагов</p>
+        <p class="text-sm text-gray-400 mt-1">Guild & Clan Warfare Edition</p>
     </header>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
-    <main class="w-full max-w-2xl flex-1 flex flex-col justify-center items-center">
+    <main class="w-full max-w-2xl flex-1 flex flex-col justify-center items-center space-y-6">
 
-        <!-- ШАГ 1: ФОРМА РЕГИСТРАЦИИ С КНОПКОЙ -->
+        <!-- ШАГ 1: РЕГИСТРАЦИЯ -->
         <div id="setup-screen" class="w-full bg-gray-900/80 border border-gray-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md">
             <h2 class="font-orbitron text-xl font-bold text-center mb-2">РЕГИСТРАЦИЯ В БАЗЕ ОРДЕНА</h2>
             <p class="text-xs text-center text-gray-400 mb-6">Введи ник, выбери меч и нажми кнопку входа.</p>
@@ -103,6 +103,7 @@
         <!-- ШАГ 2: ПАНЕЛЬ УПРАВЛЕНИЯ -->
         <div id="app-screen" class="w-full hidden flex flex-col space-y-6">
             
+            <!-- ПРОФИЛЬ -->
             <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl flex flex-col space-y-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
@@ -139,7 +140,7 @@
             <!-- БАННЕР СРИВА -->
             <div id="lock-banner" class="hidden bg-red-950/80 border border-red-600/80 rounded-2xl p-4 text-center glow-red">
                 <h4 class="font-orbitron font-bold text-red-400 text-sm">⚠️ ПРОТОКОЛ ПАДЕНИЯ АКТИВИРОВАН</h4>
-                <p class="text-xs text-red-300 mt-1">Ты сорвался. Кнопки выживания заблокированы, монеты обнулены.</p>
+                <p class="text-xs text-red-300 mt-1">Ты сорвался. Автоматически изгнан из гильдии и приговорен к медали «ПОЗОР 2026»!</p>
             </div>
 
             <!-- КАЛЕНДАРЬ -->
@@ -161,8 +162,9 @@
                 </button>
             </div>
 
-            <!-- ТЕГ И ГИЛЬДИИ -->
+            <!-- УПРАВЛЕНИЕ ТЕГОМ И ГИЛЬДИЯМИ -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- ТЕГ -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
                         <h4 class="font-orbitron font-bold text-xs text-pink-400 mb-1">🏷️ СВОЙ ТЕГ (МАКС. 4 СИМВОЛА)</h4>
@@ -173,23 +175,48 @@
                     </div>
                 </div>
 
-                <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
+                <!-- СОЗДАНИЕ / ВСТУПЛЕНИЕ В ГИЛЬДИЮ -->
+                <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between space-y-3">
                     <div>
-                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ ГИЛЬДИЯ</h4>
-                        <div id="guild-info" class="text-xs text-gray-400 mb-2">Ты не состоишь в гильдии.</div>
+                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ ГИЛЬДИИ</h4>
+                        <div id="guild-info" class="text-xs text-gray-400">Ты не состоишь в гильдии.</div>
                     </div>
+                    
                     <div class="space-y-2">
                         <div class="flex space-x-2">
-                            <input type="text" id="guild-name-input" placeholder="Название" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
+                            <input type="text" id="guild-name-input" placeholder="Название гильдии" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
                             <input type="text" id="guild-tag-input" maxlength="4" placeholder="ТЕГ" class="w-16 bg-gray-950 border border-gray-700 rounded-xl px-2 py-2 text-white text-xs uppercase text-center">
                         </div>
-                        <input type="text" id="guild-avatar-input" placeholder="Аватарка (URL)" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
-                        <button onclick="createGuild()" class="w-full bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs">Создать (300 🪙)</button>
+                        <input type="text" id="guild-avatar-input" placeholder="Ссылка на аватарочку (URL)" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
+                        <div class="flex space-x-2">
+                            <button onclick="createGuild()" class="w-full bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs">Создать (300🪙)</button>
+                            <button onclick="leaveGuild()" class="bg-red-950 border border-red-600 text-red-300 hover:bg-red-900 px-3 py-2 rounded-xl font-orbitron text-xs">Выйти</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ТАБЛИЦА ЛИДЕРОВ -->
+            <!-- ЧАТ ГИЛЬДИИ -->
+            <div id="guild-chat-container" class="hidden bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl flex flex-col space-y-3">
+                <h3 class="font-orbitron font-bold text-sm text-blue-400">💬 ЧАТ ГИЛЬДИИ</h3>
+                <div id="chat-messages" class="h-40 overflow-y-auto bg-gray-950 border border-gray-800 rounded-xl p-3 space-y-2 text-xs">
+                    <div class="text-gray-500">Загрузка сообщений чата...</div>
+                </div>
+                <div class="flex space-x-2">
+                    <input type="text" id="chat-input" placeholder="Написать сообщение сокланам..." class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
+                    <button onclick="sendChatMessage()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-orbitron text-xs">Отправить</button>
+                </div>
+            </div>
+
+            <!-- МИРОВОЙ ТОП ГИЛЬДИЙ -->
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl">
+                <h3 class="font-orbitron font-bold text-sm text-purple-400 mb-3">🛡️ МИРОВОЙ ТОП ГИЛЬДИЙ (СУММАРНЫЕ ДНИ)</h3>
+                <div id="guilds-leaderboard" class="space-y-2 text-xs font-orbitron">
+                    <div class="text-gray-500">Загрузка топа гильдий...</div>
+                </div>
+            </div>
+
+            <!-- МИРОВАЯ ТАБЛИЦА ЛИДЕРОВ -->
             <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl">
                 <h3 class="font-orbitron font-bold text-sm text-yellow-400 mb-3">🏆 МИРОВАЯ ТАБЛИЦА ЛИДЕРОВ ОРДЕНА</h3>
                 <div id="leaderboard-list" class="space-y-2 text-xs font-orbitron">
@@ -208,7 +235,7 @@
     <!-- СКРИПТ ПРИЛОЖЕНИЯ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, addDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB1evscIDCuZQ93k7BAoOjFdHeNa9MrgR8",
@@ -290,17 +317,21 @@
                 coins: isAdmin ? 1500 : 500,
                 isFailed: (selectedSwordType === 'red'),
                 tag: isAdmin ? 'DEV' : '',
-                guild: '',
+                guildId: '',
+                guildName: '',
                 guildTag: '',
                 guildAvatar: '',
                 medals: isAdmin ? ['DEV'] : [],
                 statusHistory: {}
             };
 
+            // Если со старта ситх — сразу позорная медаль
+            if (userData.isFailed && !userData.medals.includes('ПОЗОР 2026')) {
+                userData.medals.push('ПОЗОР 2026');
+            }
+
             localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
-
-            // Фоновая синхронизация с Firebase
             setDoc(doc(db, "users", currentUsername), userData).catch(err => console.error("Sync error:", err));
         }
 
@@ -322,17 +353,30 @@
             try {
                 const querySnapshot = await getDocs(collection(db, "users"));
                 const leaderboardList = document.getElementById('leaderboard-list');
+                const guildsLeaderboard = document.getElementById('guilds-leaderboard');
                 leaderboardList.innerHTML = '';
+                guildsLeaderboard.innerHTML = '';
 
                 let users = [];
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
+                let guildsMap = {};
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
                     let completedCount = Object.values(data.statusHistory || {}).filter(v => v === true).length;
-                    users.push({ name: data.name, coins: data.coins || 0, streak: completedCount, tag: data.tag, guildTag: data.guildTag });
+                    users.push({ name: data.name, coins: data.coins || 0, streak: completedCount, tag: data.tag, guildTag: data.guildTag, guildName: data.guildName });
+
+                    // Суммарный топ гильдий
+                    if (data.guildName) {
+                        if (!guildsMap[data.guildName]) {
+                            guildsMap[data.guildName] = { name: data.guildName, tag: data.guildTag || 'TEAM', avatar: data.guildAvatar || '', totalDays: 0, members: 0 };
+                        }
+                        guildsMap[data.guildName].totalDays += completedCount;
+                        guildsMap[data.guildName].members += 1;
+                    }
                 });
 
+                // Лидерборд игроков
                 users.sort((a, b) => b.streak - a.streak || b.coins - a.coins);
-
                 users.forEach((u, index) => {
                     const row = document.createElement('div');
                     row.className = 'flex justify-between items-center bg-gray-950 p-2 rounded-xl border border-gray-800';
@@ -344,8 +388,71 @@
                     `;
                     leaderboardList.appendChild(row);
                 });
+
+                // Лидерборд гильдий
+                let guildsArr = Object.values(guildsMap);
+                guildsArr.sort((a, b) => b.totalDays - a.totalDays);
+                if (guildsArr.length === 0) {
+                    guildsLeaderboard.innerHTML = `<div class="text-gray-500">Пока нет созданных гильдий.</div>`;
+                } else {
+                    guildsArr.forEach((g, index) => {
+                        const row = document.createElement('div');
+                        row.className = 'flex justify-between items-center bg-gray-950 p-2.5 rounded-xl border border-gray-800';
+                        row.innerHTML = `
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">#${index + 1}</span>
+                                <span class="text-blue-400 font-bold">[${g.tag}] ${g.name}</span>
+                                <span class="text-[10px] text-gray-500">(${g.members} уч.)</span>
+                            </div>
+                            <span class="text-yellow-400">🛡️ ${g.totalDays} суммарных дней</span>
+                        `;
+                        guildsLeaderboard.appendChild(row);
+                    });
+                }
             } catch (err) {
                 console.error("Leaderboard error:", err);
+            }
+        }
+
+        async function loadGuildChat() {
+            const chatContainer = document.getElementById('chat-messages');
+            if (!userData.guildName) return;
+
+            try {
+                const q = query(collection(db, "guilds_chat", userData.guildName, "messages"), orderBy("time", "asc"), limit(25));
+                const querySnapshot = await getDocs(q);
+                chatContainer.innerHTML = '';
+                if (querySnapshot.empty) {
+                    chatContainer.innerHTML = `<div class="text-gray-500">В чате пока тихо... Напиши первое сообщение!</div>`;
+                    return;
+                }
+                querySnapshot.forEach((doc) => {
+                    const msg = doc.data();
+                    const div = document.createElement('div');
+                    div.innerHTML = `<span class="text-pink-400 font-bold">${msg.sender}:</span> <span class="text-gray-200">${msg.text}</span>`;
+                    chatContainer.appendChild(div);
+                });
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            } catch (err) {
+                console.error("Chat error:", err);
+            }
+        }
+
+        window.sendChatMessage = async function() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text || !userData.guildName) return;
+
+            try {
+                await addDoc(collection(db, "guilds_chat", userData.guildName, "messages"), {
+                    sender: userData.name,
+                    text: text,
+                    time: Date.now()
+                });
+                input.value = '';
+                loadGuildChat();
+            } catch (err) {
+                console.error("Send msg error:", err);
             }
         }
 
@@ -374,6 +481,8 @@
 
             const lockBanner = document.getElementById('lock-banner');
             const actionButtons = document.getElementById('action-buttons');
+            const chatContainer = document.getElementById('guild-chat-container');
+
             if (userData.isFailed) {
                 lockBanner.classList.remove('hidden');
                 actionButtons.classList.add('hidden');
@@ -382,10 +491,50 @@
                 actionButtons.classList.remove('hidden');
             }
 
+            if (userData.guildName) {
+                chatContainer.classList.remove('hidden');
+                loadGuildChat();
+            } else {
+                chatContainer.classList.add('hidden');
+            }
+
+            checkAndAwardMedals();
             renderMedals();
             renderCalendar();
             renderGuild();
             loadGuildsAndLeaderboard();
+        }
+
+        function checkAndAwardMedals() {
+            let completedCount = Object.values(userData.statusHistory || {}).filter(v => v === true).length;
+            let updated = false;
+
+            // Медаль 2026 за 30 дней
+            if (completedCount >= 30 && !userData.isFailed) {
+                if (!userData.medals.includes('2026')) {
+                    userData.medals.push('2026');
+                    updated = true;
+                }
+            }
+
+            // Авто-кик и медаль Позор 2026 при срыве
+            if (userData.isFailed) {
+                if (!userData.medals.includes('ПОЗОР 2026')) {
+                    userData.medals.push('ПОЗОР 2026');
+                    updated = true;
+                }
+                if (userData.guildName) {
+                    userData.guildName = '';
+                    userData.guildTag = '';
+                    userData.guildAvatar = '';
+                    updated = true;
+                }
+            }
+
+            if (updated) {
+                localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
+                updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
+            }
         }
 
         function renderMedals() {
@@ -394,7 +543,8 @@
             if (userData.medals && userData.medals.length > 0) {
                 userData.medals.forEach(m => {
                     const badge = document.createElement('span');
-                    badge.className = 'bg-yellow-500/20 border border-yellow-500 text-yellow-400 px-2 py-0.5 rounded text-[10px] glow-gold font-bold';
+                    let glowClass = (m === 'ПОЗОР 2026') ? 'bg-red-500/20 border border-red-500 text-red-400 glow-shame' : 'bg-yellow-500/20 border border-yellow-500 text-yellow-400 glow-gold';
+                    badge.className = `${glowClass} px-2 py-0.5 rounded text-[10px] font-bold`;
                     badge.innerText = `🏅 ${m}`;
                     container.appendChild(badge);
                 });
@@ -429,10 +579,10 @@
 
         function renderGuild() {
             const guildInfo = document.getElementById('guild-info');
-            if (userData.guild) {
-                guildInfo.innerText = `Гильдия: ${userData.guild} [${userData.guildTag}]`;
+            if (userData.guildName) {
+                guildInfo.innerText = `Гильдия: ${userData.guildName} [${userData.guildTag}]`;
             } else {
-                guildInfo.innerText = `Ты не состоишь в гильдии.`;
+                guildInfo.innerText = `Ты не состоишь в гильдии. Создай свою или введи существующую!`;
             }
         }
 
@@ -458,6 +608,11 @@
                 userData.rankTitle = 'Ситх (Сорвался)';
                 userData.isFailed = true;
                 userData.coins = 0;
+                // Автоматический кик из гильдии и позор
+                userData.guildName = '';
+                userData.guildTag = '';
+                userData.guildAvatar = '';
+                if (!userData.medals.includes('ПОЗОР 2026')) userData.medals.push('ПОЗОР 2026');
             }
 
             localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
@@ -484,23 +639,35 @@
         }
 
         window.createGuild = async function() {
+            if (userData.isFailed) return alert('Ситхам запрещено управлять гильдиями!');
             const guildName = document.getElementById('guild-name-input').value.trim();
             const guildTag = document.getElementById('guild-tag-input').value.trim().toUpperCase();
             const guildAvatar = document.getElementById('guild-avatar-input').value.trim();
 
-            if (!guildName || !guildTag) return alert('Введи название и тег!');
+            if (!guildName || !guildTag) return alert('Введи название и тег гильдии!');
             if (guildTag.length > 4) return alert('Тег максимум 4 символа!');
-            if (userData.coins < 300) return alert('Нужно 300 кредитов!');
-            if (BANWORDS.some(word => guildTag.includes(word))) return alert('🚫 Банворд!');
+            if (userData.coins < 300) return alert('Создание гильдии стоит 300 кредитов!');
+            if (BANWORDS.some(word => guildTag.includes(word))) return alert('🚫 В теге запрещенное слово!');
 
             userData.coins -= 300;
-            userData.guild = guildName;
+            userData.guildName = guildName;
             userData.guildTag = guildTag;
             userData.guildAvatar = guildAvatar;
 
             localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
-            alert(`Гильдия "${guildName}" создана!`);
+            alert(`Гильдия "${guildName}" успешно создана!`);
+            updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
+        }
+
+        window.leaveGuild = async function() {
+            if (!userData.guildName) return alert('Ты не в гильдии.');
+            userData.guildName = '';
+            userData.guildTag = '';
+            userData.guildAvatar = '';
+            localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
+            showApp();
+            alert('Ты покинул гильдию.');
             updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
         }
 
