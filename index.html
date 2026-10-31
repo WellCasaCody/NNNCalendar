@@ -35,7 +35,7 @@
         <!-- ШАГ 1: РЕГИСТРАЦИЯ И ВЫБОР МЕЧА -->
         <div id="setup-screen" class="w-full bg-gray-900/80 border border-gray-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md">
             <h2 class="font-orbitron text-xl font-bold text-center mb-2">РЕГИСТРАЦИЯ В БАЗЕ ОРДЕНА</h2>
-            <p class="text-xs text-center text-gray-400 mb-6">Введи свой ник. Если ты создатель (k1zo), система запросит секретный ключ. <span class="text-red-400 font-bold">Честность прежде всего</span>!</p>
+            <p class="text-xs text-center text-gray-400 mb-6">Введи ник. Если ты создатель (<span class="text-pink-400">k1zo</span>), система запросит секретный ключ.</p>
             
             <div class="mb-4">
                 <label class="block text-xs font-orbitron text-gray-400 mb-2">ТВОЙ НИКНЕЙМ</label>
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <!-- ШАГ 2: ПАНЕЛЬ УПРАВЛЕНИЯ И ИГРОВЫЕ ВКЛЮЧЕНИЯ -->
+        <!-- ШАГ 2: ПАНЕЛЬ УПРАВЛЕНИЯ -->
         <div id="app-screen" class="w-full hidden flex flex-col space-y-6">
             
             <!-- ПРОФИЛЬ -->
@@ -129,10 +129,10 @@
                 </div>
             </div>
 
-            <!-- АДМИН-ПАНЕЛЬ (ВИДНА ТОЛЬКО СОЗДАТЕЛЮ) -->
+            <!-- АДМИН-ПАНЕЛЬ -->
             <div id="admin-panel" class="hidden bg-pink-950/40 border border-pink-600/50 rounded-2xl p-4 glow-admin">
-                <h4 class="font-orbitron font-bold text-pink-400 text-xs mb-1">🛠️ ПАНЕЛЬ СОЗДАТЕЛЯ (DEVELOPER ADMIN)</h4>
-                <p class="text-[10px] text-gray-300 mb-2">Привет, k1zo! У тебя абсолютная власть над базой данных Firebase.</p>
+                <h4 class="font-orbitron font-bold text-pink-400 text-xs mb-1">🛠️ ПАНЕЛЬ СОЗДАТЕЛЯ (k1zo)</h4>
+                <p class="text-[10px] text-gray-300 mb-2">Абсолютная власть над облачной базой данных.</p>
                 <button onclick="adminResetAllData()" class="bg-pink-600 hover:bg-pink-500 text-white px-3 py-1.5 rounded-lg text-xs font-orbitron transition">Сбросить всю статистику сервера</button>
             </div>
 
@@ -145,7 +145,7 @@
             <!-- КАЛЕНДАРЬ -->
             <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-orbitron font-bold text-sm text-gray-300">НОЯБРЬ 2026 — ОБЛАЧНЫЙ КАЛЕНДАРЬ</h3>
+                    <h3 class="font-orbitron font-bold text-sm text-gray-300">НОЯБРЬ 2026 — КАЛЕНДАРЬ</h3>
                     <span id="streak-counter" class="text-xs font-orbitron text-yellow-400">Дни: 0 / 30</span>
                 </div>
                 <div class="grid grid-cols-7 gap-2" id="calendar-grid"></div>
@@ -161,29 +161,24 @@
                 </button>
             </div>
 
-            <!-- МАГАЗИН И ГИЛЬДИИ -->
+            <!-- КАСТОМНЫЙ ТЕГ И ГИЛЬДИИ -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- МАГАЗИН -->
+                <!-- КАСТОМНЫЙ ТЕГ (ДО 4 СИМВОЛОВ С БАНВОРДАМИ) -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
-                        <h4 class="font-orbitron font-bold text-xs text-yellow-400 mb-2">🛒 МАГАЗИН ОРДЕНА</h4>
-                        <div class="space-y-2 text-xs">
-                            <div class="flex justify-between items-center bg-gray-950 p-2 rounded-xl border border-gray-800">
-                                <span>Тег [MASTER] (500 🪙)</span>
-                                <button onclick="buyItem('tag', '[MASTER]', 500)" class="bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded font-orbitron">Купить</button>
-                            </div>
-                            <div class="flex justify-between items-center bg-gray-950 p-2 rounded-xl border border-gray-800">
-                                <span>Медаль 2026 (1000 🪙)</span>
-                                <button onclick="buyItem('medal', '2026', 1000)" class="bg-purple-600 hover:bg-purple-500 text-white px-2 py-1 rounded font-orbitron">Купить</button>
-                            </div>
-                        </div>
+                        <h4 class="font-orbitron font-bold text-xs text-pink-400 mb-1">🏷️ СВОЙ ТЕГ (МАКС. 4 СИМВОЛА)</h4>
+                        <p class="text-[10px] text-gray-400 mb-3">Защищено от плохих слов и токсичности.</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <input type="text" id="custom-tag-input" maxlength="4" placeholder="Напр: K1ZO" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs uppercase">
+                        <button onclick="setCustomTag()" class="bg-pink-600 hover:bg-pink-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs whitespace-nowrap">Установить</button>
                     </div>
                 </div>
 
                 <!-- ГИЛЬДИИ -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
-                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-2">🛡️ СИСТЕМА ГИЛЬДИЙ</h4>
+                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ СИСТЕМА ГИЛЬДИЙ</h4>
                         <div id="guild-info" class="text-xs text-gray-400 mb-3">Ты не состоишь в гильдии.</div>
                     </div>
                     <div class="flex space-x-2">
@@ -220,6 +215,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Список запрещенных слов (банворды для тегов)
+        const BANWORDS = ['SLAV', 'GITL', 'HITL', 'AZOV', 'SS', 'NSDA', 'KURW', 'EBAN', 'HUY', 'PIDR', 'CYKA', 'NIGG', 'CHUR'];
+
         let currentUsername = localStorage.getItem('nnn_username') || '';
         let userData = null;
 
@@ -228,7 +226,6 @@
         const usernameInput = document.getElementById('username-input');
         const passwordContainer = document.getElementById('password-container');
 
-        // Динамический показ поля ввода пароля, если ввели ник k1zo
         usernameInput.addEventListener('input', (e) => {
             if (e.target.value.trim().toLowerCase() === 'k1zo') {
                 passwordContainer.classList.remove('hidden');
@@ -269,11 +266,11 @@
                 name: currentUsername,
                 swordType: type,
                 rankTitle: isAdmin ? 'Архитектор Ордена (k1zo)' : title,
-                coins: isAdmin ? 1500 : 500, // Бонус для старта
+                coins: isAdmin ? 1500 : 500,
                 isFailed: (type === 'red'),
                 tag: isAdmin ? '[DEV]' : '',
                 guild: '',
-                medals: isAdmin ? ['2026', 'DEV'] : [],
+                medals: isAdmin ? ['DEV'] : [], // Медаль 2026 удалена со старта!
                 statusHistory: {}
             };
 
@@ -304,12 +301,10 @@
             document.getElementById('profile-coins').innerText = userData.coins;
             document.getElementById('profile-tag').innerText = userData.tag || 'Нет';
 
-            // Админ панель видна только k1zo
             if (isAdmin) {
                 document.getElementById('admin-panel').classList.remove('hidden');
             }
 
-            // Иконка меча
             const icon = document.getElementById('profile-saber-icon');
             icon.className = `w-6 h-6 rounded-full glow-${userData.swordType === 'white' ? 'white' : userData.swordType === 'black' ? 'black' : userData.swordType}`;
             if(userData.swordType === 'white') icon.style.backgroundColor = '#ffffff';
@@ -319,7 +314,6 @@
             else if(userData.swordType === 'green') icon.style.backgroundColor = '#22c55e';
             else if(userData.swordType === 'red') icon.style.backgroundColor = '#ef4444';
 
-            // Лок при срыве
             const lockBanner = document.getElementById('lock-banner');
             const actionButtons = document.getElementById('action-buttons');
             if (userData.isFailed) {
@@ -330,9 +324,22 @@
                 actionButtons.classList.remove('hidden');
             }
 
+            // Авто-выдача медали 2026, если прошел все 30 дней без срывов
+            checkAndAward2026Medal();
+
             renderMedals();
             renderCalendar();
             renderGuild();
+        }
+
+        function checkAndAward2026Medal() {
+            let completedCount = Object.values(userData.statusHistory).filter(v => v === true).length;
+            if (completedCount >= 30 && !userData.isFailed) {
+                if (!userData.medals.includes('2026')) {
+                    userData.medals.push('2026');
+                    updateDoc(doc(db, "users", currentUsername), userData);
+                }
+            }
         }
 
         function renderMedals() {
@@ -346,7 +353,7 @@
                     container.appendChild(badge);
                 });
             } else {
-                container.innerHTML = `<span class="text-gray-500 text-[10px]">Нет наград</span>`;
+                container.innerHTML = `<span class="text-gray-500 text-[10px]">Нет наград (нужно 30 дн.)</span>`;
             }
         }
 
@@ -411,22 +418,28 @@
             showApp();
         }
 
-        window.buyItem = async function(type, name, price) {
-            if (userData.coins < price) {
-                alert('Не хватает кредитов Ордена!');
+        window.setCustomTag = async function() {
+            let tagInput = document.getElementById('custom-tag-input').value.trim().toUpperCase();
+            if (!tagInput) {
+                alert('Введи тег!');
+                return;
+            }
+            if (tagInput.length > 4) {
+                alert('Максимум 4 символа в теге!');
                 return;
             }
 
-            userData.coins -= price;
-            if (type === 'tag') {
-                userData.tag = name;
-            } else if (type === 'medal') {
-                if (!userData.medals.includes(name)) userData.medals.push(name);
+            // Проверка по банворд-листу
+            const isBanned = BANWORDS.some(word => tagInput.includes(word));
+            if (isBanned) {
+                alert('🚫 Этот тег заблокирован системой безопасности Ордена (банворд-лист)!');
+                return;
             }
 
+            userData.tag = `[${tagInput}]`;
             await updateDoc(doc(db, "users", currentUsername), userData);
             showApp();
-            alert('Покупка успешно совершена!');
+            alert('Кастомный тег успешно установлен!');
         }
 
         window.createGuild = async function() {
