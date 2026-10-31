@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Путь Джедая: Недрочабрь 2026 (Instant Edition)</title>
+    <title>Путь Джедая: Недрочабрь 2026 (Fix Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -17,6 +17,8 @@
         .glow-black { box-shadow: 0 0 20px rgba(75, 85, 99, 0.8); border: 1px solid #4b5563; }
         .glow-gold { box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
         .glow-admin { box-shadow: 0 0 25px rgba(236, 72, 153, 0.8); border: 1px solid #ec4899; }
+        /* Выделение выбранного меча */
+        .sword-btn.selected { border-color: #3b82f6 !important; background-color: rgba(59, 130, 246, 0.15) !important; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between p-4 selection:bg-blue-500 selection:text-white">
@@ -26,16 +28,16 @@
         <h1 class="font-orbitron text-3xl md:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-red-500">
             ПУТЬ ДЖЕДАЯ: НЕДРОЧАБРЬ
         </h1>
-        <p class="text-sm text-gray-400 mt-1">Instant Edition • Мгновенный отклик</p>
+        <p class="text-sm text-gray-400 mt-1">Fix Edition • Надежный вход без лагов</p>
     </header>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
     <main class="w-full max-w-2xl flex-1 flex flex-col justify-center items-center">
 
-        <!-- ШАГ 1: РЕГИСТРАЦИЯ И ВЫБОР МЕЧА -->
+        <!-- ШАГ 1: ФОРМА РЕГИСТРАЦИИ С КНОПКОЙ -->
         <div id="setup-screen" class="w-full bg-gray-900/80 border border-gray-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md">
             <h2 class="font-orbitron text-xl font-bold text-center mb-2">РЕГИСТРАЦИЯ В БАЗЕ ОРДЕНА</h2>
-            <p class="text-xs text-center text-gray-400 mb-6">Введи ник. Если ты создатель (<span class="text-pink-400">k1zo</span>), введи секретный пароль.</p>
+            <p class="text-xs text-center text-gray-400 mb-6">Введи ник, выбери меч и нажми кнопку входа.</p>
             
             <div class="mb-4">
                 <label class="block text-xs font-orbitron text-gray-400 mb-2">ТВОЙ НИКНЕЙМ</label>
@@ -49,42 +51,42 @@
 
             <label class="block text-xs font-orbitron text-gray-400 mb-2">ВЫБЕРИ СТАРТОВЫЙ СТАТУС (МЕЧ)</label>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-                <button onclick="registerUser('blue', 'Джедай')" class="flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-blue-900/50 hover:border-blue-500 transition text-left">
+                <button type="button" onclick="selectSword('blue', 'Джедай', this)" class="sword-btn flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-blue-900/50 hover:border-blue-500 transition text-left">
                     <div class="w-4 h-4 rounded-full bg-blue-500 glow-blue"></div>
                     <div>
                         <div class="font-orbitron text-sm text-blue-400 font-bold">Синий меч (Джедай)</div>
                         <div class="text-[10px] text-gray-400">Стоишь на страже ордена.</div>
                     </div>
                 </button>
-                <button onclick="registerUser('purple', 'Путь искупления')" class="flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-purple-900/50 hover:border-purple-500 transition text-left">
+                <button type="button" onclick="selectSword('purple', 'Путь искупления', this)" class="sword-btn flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-purple-900/50 hover:border-purple-500 transition text-left">
                     <div class="w-4 h-4 rounded-full bg-purple-500 glow-purple"></div>
                     <div>
                         <div class="font-orbitron text-sm text-purple-400 font-bold">Фиолетовый меч</div>
-                        <div class="text-[10px] text-gray-400">В прошлый раз был ситх, но встал на путь.</div>
+                        <div class="text-[10px] text-gray-400">В прошлый раз был ситх.</div>
                     </div>
                 </button>
-                <button onclick="registerUser('green', 'Мастер пути')" class="flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-green-900/50 hover:border-green-500 transition text-left">
+                <button type="button" onclick="selectSword('green', 'Мастер пути', this)" class="sword-btn flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-green-900/50 hover:border-green-500 transition text-left">
                     <div class="w-4 h-4 rounded-full bg-green-500 glow-green"></div>
                     <div>
                         <div class="font-orbitron text-sm text-green-400 font-bold">Зеленый меч</div>
                         <div class="text-[10px] text-gray-400">Продолжаешь путь мудрости.</div>
                     </div>
                 </button>
-                <button onclick="registerUser('white', 'Ветеран 5 лет')" class="flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-gray-600 hover:border-white transition text-left">
+                <button type="button" onclick="selectSword('white', 'Ветеран 5 лет', this)" class="sword-btn flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-gray-600 hover:border-white transition text-left">
                     <div class="w-4 h-4 rounded-full bg-white glow-white"></div>
                     <div>
                         <div class="font-orbitron text-sm text-white font-bold">Белый меч (5 лет)</div>
                         <div class="text-[10px] text-gray-400">Джедай со стажем 5 лет.</div>
                     </div>
                 </button>
-                <button onclick="registerUser('black', 'Легендарный Ситх')" class="flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-gray-700 hover:border-gray-500 transition text-left">
+                <button type="button" onclick="selectSword('black', 'Легендарный Ситх', this)" class="sword-btn flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-gray-700 hover:border-gray-500 transition text-left">
                     <div class="w-4 h-4 rounded-full bg-gray-700 glow-black"></div>
                     <div>
                         <div class="font-orbitron text-sm text-gray-300 font-bold">Черный меч (5 лет Ситх)</div>
                         <div class="text-[10px] text-gray-400">Темный властелин дисциплин.</div>
                     </div>
                 </button>
-                <button onclick="registerUser('red', 'Ситх (Сорвался)')" class="flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-red-900/50 hover:border-red-500 transition text-left">
+                <button type="button" onclick="selectSword('red', 'Ситх (Сорвался)', this)" class="sword-btn flex items-center space-x-3 p-3 rounded-xl bg-gray-950 border border-red-900/50 hover:border-red-500 transition text-left">
                     <div class="w-4 h-4 rounded-full bg-red-500 glow-red"></div>
                     <div>
                         <div class="font-orbitron text-sm text-red-400 font-bold">Красный меч (Ситх)</div>
@@ -92,12 +94,15 @@
                     </div>
                 </button>
             </div>
+
+            <button onclick="submitRegistration()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-orbitron font-bold py-4 rounded-xl shadow-lg transition text-sm">
+                ⚡ ВОЙТИ В ОРДЕН
+            </button>
         </div>
 
         <!-- ШАГ 2: ПАНЕЛЬ УПРАВЛЕНИЯ -->
         <div id="app-screen" class="w-full hidden flex flex-col space-y-6">
             
-            <!-- ПРОФИЛЬ -->
             <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl flex flex-col space-y-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
@@ -148,32 +153,29 @@
 
             <!-- КНОПКИ ДЕЙСТВИЙ -->
             <div id="action-buttons" class="grid grid-cols-2 gap-4">
-                <button onclick="markDay(true)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-orbitron font-bold py-3.5 px-4 rounded-xl shadow-lg transition transform active:scale-95 text-sm flex items-center justify-center space-x-2">
+                <button onclick="markDay(true)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-orbitron font-bold py-3.5 px-4 rounded-xl shadow-lg transition text-sm flex items-center justify-center space-x-2">
                     <span>🛡️ Выдержал (+100 🪙)</span>
                 </button>
-                <button onclick="markDay(false)" class="bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-orbitron font-bold py-3.5 px-4 rounded-xl shadow-lg transition transform active:scale-95 text-sm flex items-center justify-center space-x-2">
+                <button onclick="markDay(false)" class="bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-orbitron font-bold py-3.5 px-4 rounded-xl shadow-lg transition text-sm flex items-center justify-center space-x-2">
                     <span>⚡ Сорвался (Ситх)</span>
                 </button>
             </div>
 
-            <!-- КАСТОМНЫЙ ТЕГ И УПРАВЛЕНИЕ ГИЛЬДИЕЙ -->
+            <!-- ТЕГ И ГИЛЬДИИ -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- ТЕГ -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
                         <h4 class="font-orbitron font-bold text-xs text-pink-400 mb-1">🏷️ СВОЙ ТЕГ (МАКС. 4 СИМВОЛА)</h4>
-                        <p class="text-[10px] text-gray-400 mb-3">Защищено от мата и плохих слов.</p>
                     </div>
-                    <div class="flex space-x-2">
+                    <div class="flex space-x-2 mt-2">
                         <input type="text" id="custom-tag-input" maxlength="4" placeholder="K1ZO" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs uppercase">
                         <button onclick="setCustomTag()" class="bg-pink-600 hover:bg-pink-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs whitespace-nowrap">Установить</button>
                     </div>
                 </div>
 
-                <!-- ГИЛЬДИИ -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
-                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ ГИЛЬДИЯ (ТЕГ И АВАТАРКА)</h4>
+                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ ГИЛЬДИЯ</h4>
                         <div id="guild-info" class="text-xs text-gray-400 mb-2">Ты не состоишь в гильдии.</div>
                     </div>
                     <div class="space-y-2">
@@ -181,17 +183,17 @@
                             <input type="text" id="guild-name-input" placeholder="Название" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
                             <input type="text" id="guild-tag-input" maxlength="4" placeholder="ТЕГ" class="w-16 bg-gray-950 border border-gray-700 rounded-xl px-2 py-2 text-white text-xs uppercase text-center">
                         </div>
-                        <input type="text" id="guild-avatar-input" placeholder="Ссылка на аватарку (URL)" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
-                        <button onclick="createGuild()" class="w-full bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs">Создать гильдию (300 🪙)</button>
+                        <input type="text" id="guild-avatar-input" placeholder="Аватарка (URL)" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
+                        <button onclick="createGuild()" class="w-full bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs">Создать (300 🪙)</button>
                     </div>
                 </div>
             </div>
 
-            <!-- МИРОВАЯ ТАБЛИЦА ЛИДЕРОВ -->
+            <!-- ТАБЛИЦА ЛИДЕРОВ -->
             <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl">
                 <h3 class="font-orbitron font-bold text-sm text-yellow-400 mb-3">🏆 МИРОВАЯ ТАБЛИЦА ЛИДЕРОВ ОРДЕНА</h3>
                 <div id="leaderboard-list" class="space-y-2 text-xs font-orbitron">
-                    <div class="text-gray-500">Загрузка данных сервера...</div>
+                    <div class="text-gray-500">Загрузка данных...</div>
                 </div>
             </div>
 
@@ -199,12 +201,11 @@
 
     </main>
 
-    <!-- ФУТЕР -->
     <footer class="w-full max-w-2xl text-center py-4 text-xs text-gray-600 font-orbitron">
         FIREBASE CLOUD SYNC ACTIVE
     </footer>
 
-    <!-- FIREBASE SDK И СКРИПТ ПРИЛОЖЕНИЯ -->
+    <!-- СКРИПТ ПРИЛОЖЕНИЯ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
@@ -226,6 +227,8 @@
 
         let currentUsername = localStorage.getItem('nnn_username') || '';
         let userData = null;
+        let selectedSwordType = 'blue';
+        let selectedSwordTitle = 'Джедай';
 
         const setupScreen = document.getElementById('setup-screen');
         const appScreen = document.getElementById('app-screen');
@@ -242,7 +245,6 @@
 
         window.addEventListener('DOMContentLoaded', async () => {
             if (currentUsername) {
-                // Мгновенно отрисовываем из локалсторадж, пока Firebase думает в фоне
                 const cached = localStorage.getItem('nnn_userdata_cache');
                 if (cached) {
                     userData = JSON.parse(cached);
@@ -252,8 +254,14 @@
             }
         });
 
-        // МОМЕНТАЛЬНЫЙ ВХОД (0.1 сек) С ФОНОВОЙ ОТПРАВКОЙ В FIREBASE
-        window.registerUser = function(type, title) {
+        window.selectSword = function(type, title, btnElement) {
+            selectedSwordType = type;
+            selectedSwordTitle = title;
+            document.querySelectorAll('.sword-btn').forEach(b => b.classList.remove('selected'));
+            btnElement.classList.add('selected');
+        }
+
+        window.submitRegistration = function() {
             const nameInput = usernameInput.value.trim();
             if (!nameInput) {
                 alert('Введи ник!');
@@ -277,10 +285,10 @@
 
             userData = {
                 name: currentUsername,
-                swordType: type,
-                rankTitle: isAdmin ? 'Архитектор Ордена (k1zo)' : title,
+                swordType: selectedSwordType,
+                rankTitle: isAdmin ? 'Архитектор Ордена (k1zo)' : selectedSwordTitle,
                 coins: isAdmin ? 1500 : 500,
-                isFailed: (type === 'red'),
+                isFailed: (selectedSwordType === 'red'),
                 tag: isAdmin ? 'DEV' : '',
                 guild: '',
                 guildTag: '',
@@ -289,19 +297,17 @@
                 statusHistory: {}
             };
 
-            // Сохраняем в кеш и мгновенно показываем приложение
             localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
 
-            // В фоновом режиме шлем в Firebase без блокировки интерфейса
-            setDoc(doc(db, "users", currentUsername), userData).catch(err => console.error("Cloud sync error:", err));
+            // Фоновая синхронизация с Firebase
+            setDoc(doc(db, "users", currentUsername), userData).catch(err => console.error("Sync error:", err));
         }
 
         async function loadUserData(username) {
             try {
                 const docRef = doc(db, "users", username);
                 const docSnap = await getDoc(docRef);
-
                 if (docSnap.exists()) {
                     userData = docSnap.data();
                     localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
@@ -339,7 +345,7 @@
                     leaderboardList.appendChild(row);
                 });
             } catch (err) {
-                console.error("Ошибка загрузки лидерборда:", err);
+                console.error("Leaderboard error:", err);
             }
         }
 
@@ -366,17 +372,6 @@
                 document.getElementById('admin-panel').classList.remove('hidden');
             }
 
-            const icon = document.getElementById('profile-saber-icon');
-            if (icon) {
-                icon.className = `w-6 h-6 rounded-full glow-${userData.swordType === 'white' ? 'white' : userData.swordType === 'black' ? 'black' : userData.swordType}`;
-                if(userData.swordType === 'white') icon.style.backgroundColor = '#ffffff';
-                else if(userData.swordType === 'black') icon.style.backgroundColor = '#333333';
-                else if(userData.swordType === 'blue') icon.style.backgroundColor = '#3b82f6';
-                else if(userData.swordType === 'purple') icon.style.backgroundColor = '#a855f7';
-                else if(userData.swordType === 'green') icon.style.backgroundColor = '#22c55e';
-                else if(userData.swordType === 'red') icon.style.backgroundColor = '#ef4444';
-            }
-
             const lockBanner = document.getElementById('lock-banner');
             const actionButtons = document.getElementById('action-buttons');
             if (userData.isFailed) {
@@ -387,21 +382,10 @@
                 actionButtons.classList.remove('hidden');
             }
 
-            checkAndAward2026Medal();
             renderMedals();
             renderCalendar();
             renderGuild();
             loadGuildsAndLeaderboard();
-        }
-
-        function checkAndAward2026Medal() {
-            let completedCount = Object.values(userData.statusHistory || {}).filter(v => v === true).length;
-            if (completedCount >= 30 && !userData.isFailed) {
-                if (!userData.medals.includes('2026')) {
-                    userData.medals.push('2026');
-                    updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
-                }
-            }
         }
 
         function renderMedals() {
@@ -415,7 +399,7 @@
                     container.appendChild(badge);
                 });
             } else {
-                container.innerHTML = `<span class="text-gray-500 text-[10px]">Нет наград (нужно 30 дн.)</span>`;
+                container.innerHTML = `<span class="text-gray-500 text-[10px]">Нет наград</span>`;
             }
         }
 
@@ -484,20 +468,18 @@
         window.setCustomTag = async function() {
             let tagInput = document.getElementById('custom-tag-input').value.trim().toUpperCase();
             if (!tagInput || tagInput.length > 4) {
-                alert('Тег должен быть от 1 до 4 символов!');
+                alert('Тег от 1 до 4 символов!');
                 return;
             }
-
-            const isBanned = BANWORDS.some(word => tagInput.includes(word));
-            if (isBanned) {
-                alert('🚫 Этот тег заблокирован системой безопасности Ордена!');
+            if (BANWORDS.some(word => tagInput.includes(word))) {
+                alert('🚫 Банворд-лист!');
                 return;
             }
 
             userData.tag = tagInput;
             localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
-            alert('Кастомный тег успешно установлен!');
+            alert('Тег установлен!');
             updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
         }
 
@@ -506,12 +488,10 @@
             const guildTag = document.getElementById('guild-tag-input').value.trim().toUpperCase();
             const guildAvatar = document.getElementById('guild-avatar-input').value.trim();
 
-            if (!guildName || !guildTag) return alert('Введи название и тег гильдии!');
-            if (guildTag.length > 4) return alert('Тег гильдии максимум 4 символа!');
-            if (userData.coins < 300) return alert('Создание гильдии стоит 300 кредитов!');
-
-            const isBanned = BANWORDS.some(word => guildTag.includes(word));
-            if (isBanned) return alert('🚫 В теге гильдии запрещенное слово!');
+            if (!guildName || !guildTag) return alert('Введи название и тег!');
+            if (guildTag.length > 4) return alert('Тег максимум 4 символа!');
+            if (userData.coins < 300) return alert('Нужно 300 кредитов!');
+            if (BANWORDS.some(word => guildTag.includes(word))) return alert('🚫 Банворд!');
 
             userData.coins -= 300;
             userData.guild = guildName;
@@ -520,12 +500,12 @@
 
             localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
-            alert(`Гильдия "${guildName}" успешно создана!`);
+            alert(`Гильдия "${guildName}" создана!`);
             updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
         }
 
         window.adminResetAllData = async function() {
-            if (confirm('Сбросить профиль в Firebase?')) {
+            if (confirm('Сбросить профиль?')) {
                 await deleteDoc(doc(db, "users", currentUsername));
                 localStorage.removeItem('nnn_username');
                 localStorage.removeItem('nnn_userdata_cache');
