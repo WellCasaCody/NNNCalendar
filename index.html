@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Путь Джедая: Недрочабрь 2026 (MMO Edition)</title>
+    <title>Путь Джедая: Недрочабрь 2026 (Instant Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -26,7 +26,7 @@
         <h1 class="font-orbitron text-3xl md:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-red-500">
             ПУТЬ ДЖЕДАЯ: НЕДРОЧАБРЬ
         </h1>
-        <p class="text-sm text-gray-400 mt-1">MMO Edition • Гильдии, Лидеры и Орден</p>
+        <p class="text-sm text-gray-400 mt-1">Instant Edition • Мгновенный отклик</p>
     </header>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
@@ -232,7 +232,6 @@
         const usernameInput = document.getElementById('username-input');
         const passwordContainer = document.getElementById('password-container');
 
-        // Исправлено: привязка к любому регистру (k1zo / K1ZO)
         usernameInput.addEventListener('input', (e) => {
             if (e.target.value.trim().toLowerCase() === 'k1zo') {
                 passwordContainer.classList.remove('hidden');
@@ -243,11 +242,18 @@
 
         window.addEventListener('DOMContentLoaded', async () => {
             if (currentUsername) {
-                await loadUserData(currentUsername);
+                // Мгновенно отрисовываем из локалсторадж, пока Firebase думает в фоне
+                const cached = localStorage.getItem('nnn_userdata_cache');
+                if (cached) {
+                    userData = JSON.parse(cached);
+                    showApp();
+                }
+                loadUserData(currentUsername);
             }
         });
 
-        window.registerUser = async function(type, title) {
+        // МОМЕНТАЛЬНЫЙ ВХОД (0.1 сек) С ФОНОВОЙ ОТПРАВКОЙ В FIREBASE
+        window.registerUser = function(type, title) {
             const nameInput = usernameInput.value.trim();
             if (!nameInput) {
                 alert('Введи ник!');
@@ -283,19 +289,26 @@
                 statusHistory: {}
             };
 
-            await setDoc(doc(db, "users", currentUsername), userData);
+            // Сохраняем в кеш и мгновенно показываем приложение
+            localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
+
+            // В фоновом режиме шлем в Firebase без блокировки интерфейса
+            setDoc(doc(db, "users", currentUsername), userData).catch(err => console.error("Cloud sync error:", err));
         }
 
         async function loadUserData(username) {
-            const docRef = doc(db, "users", username);
-            const docSnap = await getDoc(docRef);
+            try {
+                const docRef = doc(db, "users", username);
+                const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                userData = docSnap.data();
-                showApp();
-            } else {
-                localStorage.removeItem('nnn_username');
+                if (docSnap.exists()) {
+                    userData = docSnap.data();
+                    localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
+                    showApp();
+                }
+            } catch (err) {
+                console.error("Load error:", err);
             }
         }
 
@@ -386,7 +399,7 @@
             if (completedCount >= 30 && !userData.isFailed) {
                 if (!userData.medals.includes('2026')) {
                     userData.medals.push('2026');
-                    updateDoc(doc(db, "users", currentUsername), userData);
+                    updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
                 }
             }
         }
@@ -463,8 +476,9 @@
                 userData.coins = 0;
             }
 
-            await updateDoc(doc(db, "users", currentUsername), userData);
+            localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
+            updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
         }
 
         window.setCustomTag = async function() {
@@ -481,9 +495,10 @@
             }
 
             userData.tag = tagInput;
-            await updateDoc(doc(db, "users", currentUsername), userData);
+            localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
             alert('Кастомный тег успешно установлен!');
+            updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
         }
 
         window.createGuild = async function() {
@@ -503,21 +518,24 @@
             userData.guildTag = guildTag;
             userData.guildAvatar = guildAvatar;
 
-            await updateDoc(doc(db, "users", currentUsername), userData);
+            localStorage.setItem('nnn_userdata_cache', JSON.stringify(userData));
             showApp();
             alert(`Гильдия "${guildName}" успешно создана!`);
+            updateDoc(doc(db, "users", currentUsername), userData).catch(()=>{});
         }
 
         window.adminResetAllData = async function() {
             if (confirm('Сбросить профиль в Firebase?')) {
                 await deleteDoc(doc(db, "users", currentUsername));
                 localStorage.removeItem('nnn_username');
+                localStorage.removeItem('nnn_userdata_cache');
                 location.reload();
             }
         }
 
         window.logout = function() {
             localStorage.removeItem('nnn_username');
+            localStorage.removeItem('nnn_userdata_cache');
             location.reload();
         }
     </script>
