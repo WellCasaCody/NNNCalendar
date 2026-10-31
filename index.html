@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Путь Джедая: Недрочабрь 2026 (Online)</title>
+    <title>Путь Джедая: Недрочабрь 2026 (MMO Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -26,7 +26,7 @@
         <h1 class="font-orbitron text-3xl md:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-red-500">
             ПУТЬ ДЖЕДАЯ: НЕДРОЧАБРЬ
         </h1>
-        <p class="text-sm text-gray-400 mt-1">Cloud Firebase Edition • Орден против базовых инстинктов</p>
+        <p class="text-sm text-gray-400 mt-1">MMO Edition • Гильдии, Лидеры и Орден</p>
     </header>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
@@ -35,7 +35,7 @@
         <!-- ШАГ 1: РЕГИСТРАЦИЯ И ВЫБОР МЕЧА -->
         <div id="setup-screen" class="w-full bg-gray-900/80 border border-gray-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md">
             <h2 class="font-orbitron text-xl font-bold text-center mb-2">РЕГИСТРАЦИЯ В БАЗЕ ОРДЕНА</h2>
-            <p class="text-xs text-center text-gray-400 mb-6">Введи ник. Если ты создатель (<span class="text-pink-400">k1zo</span>), система запросит секретный ключ.</p>
+            <p class="text-xs text-center text-gray-400 mb-6">Введи ник. Если ты создатель (<span class="text-pink-400">k1zo</span>), введи секретный пароль.</p>
             
             <div class="mb-4">
                 <label class="block text-xs font-orbitron text-gray-400 mb-2">ТВОЙ НИКНЕЙМ</label>
@@ -97,28 +97,23 @@
         <!-- ШАГ 2: ПАНЕЛЬ УПРАВЛЕНИЯ -->
         <div id="app-screen" class="w-full hidden flex flex-col space-y-6">
             
-            <!-- ПРОФИЛЬ -->
+            <!-- ПРОФИЛЬ С ФОРМАТОМ НИКА [ТЕГ ГИЛЬДИИ] [ТВОЙ ТЕГ] Ник -->
             <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl flex flex-col space-y-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <div id="profile-saber-icon" class="w-6 h-6 rounded-full glow-blue"></div>
+                        <div id="profile-guild-avatar" class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center overflow-hidden font-orbitron text-xs text-gray-400">⚔️</div>
                         <div>
-                            <h3 id="profile-name" class="font-orbitron font-bold text-lg text-white">Имя</h3>
+                            <h3 id="profile-display-name" class="font-orbitron font-bold text-base text-white">[—] [—] Имя</h3>
                             <p id="profile-rank" class="text-xs text-blue-400 font-orbitron">Статус: Джедай</p>
                         </div>
                     </div>
                     <button onclick="logout()" class="text-xs text-gray-500 hover:text-red-400 underline transition">Выйти</button>
                 </div>
 
-                <!-- БАЛАНС, ТЕГИ И МЕДАЛИ -->
                 <div class="flex flex-wrap items-center justify-between pt-3 border-t border-gray-800 text-xs font-orbitron gap-2">
                     <div class="flex items-center space-x-2">
                         <span class="text-yellow-400">🪙 Кредиты:</span>
                         <span id="profile-coins" class="text-white font-bold text-sm">0</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-pink-400">🏷️ Тег:</span>
-                        <span id="profile-tag" class="text-gray-400 italic">Нет</span>
                     </div>
                     <div class="flex items-center space-x-2">
                         <span class="text-purple-400">🏅 Медали:</span>
@@ -161,30 +156,42 @@
                 </button>
             </div>
 
-            <!-- КАСТОМНЫЙ ТЕГ И ГИЛЬДИИ -->
+            <!-- КАСТОМНЫЙ ТЕГ И УПРАВЛЕНИЕ ГИЛЬДИЕЙ -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- КАСТОМНЫЙ ТЕГ (ДО 4 СИМВОЛОВ С БАНВОРДАМИ) -->
+                <!-- ТЕГ (ДО 4 СИМВОЛОВ С БАНВОРДАМИ) -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
                         <h4 class="font-orbitron font-bold text-xs text-pink-400 mb-1">🏷️ СВОЙ ТЕГ (МАКС. 4 СИМВОЛА)</h4>
-                        <p class="text-[10px] text-gray-400 mb-3">Защищено от плохих слов и токсичности.</p>
+                        <p class="text-[10px] text-gray-400 mb-3">Защищено от мата и плохих слов.</p>
                     </div>
                     <div class="flex space-x-2">
-                        <input type="text" id="custom-tag-input" maxlength="4" placeholder="Напр: K1ZO" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs uppercase">
+                        <input type="text" id="custom-tag-input" maxlength="4" placeholder="K1ZO" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs uppercase">
                         <button onclick="setCustomTag()" class="bg-pink-600 hover:bg-pink-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs whitespace-nowrap">Установить</button>
                     </div>
                 </div>
 
-                <!-- ГИЛЬДИИ -->
+                <!-- ГИЛЬДИИ С АВАТАРКОЙ И ТЕГОМ -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
-                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ СИСТЕМА ГИЛЬДИЙ</h4>
-                        <div id="guild-info" class="text-xs text-gray-400 mb-3">Ты не состоишь в гильдии.</div>
+                        <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ ГИЛЬДИЯ (ТЕГ И АВАТАРКА)</h4>
+                        <div id="guild-info" class="text-xs text-gray-400 mb-2">Ты не состоишь в гильдии.</div>
                     </div>
-                    <div class="flex space-x-2">
-                        <input type="text" id="guild-name-input" placeholder="Имя гильдии" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
-                        <button onclick="createGuild()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs whitespace-nowrap">Создать (300🪙)</button>
+                    <div class="space-y-2">
+                        <div class="flex space-x-2">
+                            <input type="text" id="guild-name-input" placeholder="Название" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
+                            <input type="text" id="guild-tag-input" maxlength="4" placeholder="ТЕГ" class="w-16 bg-gray-950 border border-gray-700 rounded-xl px-2 py-2 text-white text-xs uppercase text-center">
+                        </div>
+                        <input type="text" id="guild-avatar-input" placeholder="Ссылка на аватарку (URL)" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-white text-xs">
+                        <button onclick="createGuild()" class="w-full bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl font-orbitron text-xs">Создать гильдию (300 🪙)</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- МИРОВАЯ ТАБЛИЦА ЛИДЕРОВ -->
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl">
+                <h3 class="font-orbitron font-bold text-sm text-yellow-400 mb-3">🏆 МИРОВАЯ ТАБЛИЦА ЛИДЕРОВ ОРДЕНА</h3>
+                <div id="leaderboard-list" class="space-y-2 text-xs font-orbitron">
+                    <div class="text-gray-500">Загрузка данных сервера...</div>
                 </div>
             </div>
 
@@ -200,7 +207,7 @@
     <!-- FIREBASE SDK И СКРИПТ ПРИЛОЖЕНИЯ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB1evscIDCuZQ93k7BAoOjFdHeNa9MrgR8",
@@ -215,11 +222,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Список запрещенных слов (банворды для тегов)
         const BANWORDS = ['SLAV', 'GITL', 'HITL', 'AZOV', 'SS', 'NSDA', 'KURW', 'EBAN', 'HUY', 'PIDR', 'CYKA', 'NIGG', 'CHUR'];
 
         let currentUsername = localStorage.getItem('nnn_username') || '';
         let userData = null;
+        let globalGuildsData = {};
 
         const setupScreen = document.getElementById('setup-screen');
         const appScreen = document.getElementById('app-screen');
@@ -268,9 +275,11 @@
                 rankTitle: isAdmin ? 'Архитектор Ордена (k1zo)' : title,
                 coins: isAdmin ? 1500 : 500,
                 isFailed: (type === 'red'),
-                tag: isAdmin ? '[DEV]' : '',
+                tag: isAdmin ? 'DEV' : '',
                 guild: '',
-                medals: isAdmin ? ['DEV'] : [], // Медаль 2026 удалена со старта!
+                guildTag: '',
+                guildAvatar: '',
+                medals: isAdmin ? ['DEV'] : [],
                 statusHistory: {}
             };
 
@@ -290,29 +299,69 @@
             }
         }
 
+        async function loadGuildsAndLeaderboard() {
+            const querySnapshot = await getDocs(collection(db, "users"));
+            const leaderboardList = document.getElementById('leaderboard-list');
+            leaderboardList.innerHTML = '';
+
+            let users = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                let completedCount = Object.values(data.statusHistory || {}).filter(v => v === true).length;
+                users.push({ name: data.name, coins: data.coins || 0, streak: completedCount, tag: data.tag, guildTag: data.guildTag });
+            });
+
+            // Сортировка по успешным дням и кредитам
+            users.sort((a, b) => b.streak - a.streak || b.coins - a.coins);
+
+            users.forEach((u, index) => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between items-center bg-gray-950 p-2 rounded-xl border border-gray-800';
+                const gTagStr = u.guildTag ? `[${u.guildTag}] ` : '';
+                const uTagStr = u.tag ? `[${u.tag}] ` : '';
+                row.innerHTML = `
+                    <span class="text-gray-300">#${index + 1} ${gTagStr}${uTagStr}${u.name}</span>
+                    <span class="text-yellow-400">🛡️ ${u.streak} дней | 🪙 ${u.coins}</span>
+                `;
+                leaderboardList.appendChild(row);
+            });
+        }
+
         function showApp() {
             setupScreen.classList.add('hidden');
             appScreen.classList.remove('hidden');
 
-            const isAdmin = (userData.name.toLowerCase() === 'k1zo' && userData.tag === '[DEV]');
+            const isAdmin = (userData.name.toLowerCase() === 'k1zo' && userData.tag === 'DEV');
             
-            document.getElementById('profile-name').innerText = userData.name;
+            // Формат никнейма: [ТЕГ ГИЛЬДИИ] [ТВОЙ ТЕГ] Ник
+            const gTagPart = userData.guildTag ? `[${userData.guildTag}] ` : '[----] ';
+            const uTagPart = userData.tag ? `[${userData.tag}] ` : '[---] ';
+            document.getElementById('profile-display-name').innerText = `${gTagPart}${uTagPart}${userData.name}`;
             document.getElementById('profile-rank').innerText = `Статус: ${userData.rankTitle}`;
             document.getElementById('profile-coins').innerText = userData.coins;
-            document.getElementById('profile-tag').innerText = userData.tag || 'Нет';
+
+            // Аватарка гильдии
+            const avatarBox = document.getElementById('profile-guild-avatar');
+            if (userData.guildAvatar) {
+                avatarBox.innerHTML = `<img src="${userData.guildAvatar}" class="w-full h-full object-cover">`;
+            } else {
+                avatarBox.innerHTML = `⚔️`;
+            }
 
             if (isAdmin) {
                 document.getElementById('admin-panel').classList.remove('hidden');
             }
 
             const icon = document.getElementById('profile-saber-icon');
-            icon.className = `w-6 h-6 rounded-full glow-${userData.swordType === 'white' ? 'white' : userData.swordType === 'black' ? 'black' : userData.swordType}`;
-            if(userData.swordType === 'white') icon.style.backgroundColor = '#ffffff';
-            else if(userData.swordType === 'black') icon.style.backgroundColor = '#333333';
-            else if(userData.swordType === 'blue') icon.style.backgroundColor = '#3b82f6';
-            else if(userData.swordType === 'purple') icon.style.backgroundColor = '#a855f7';
-            else if(userData.swordType === 'green') icon.style.backgroundColor = '#22c55e';
-            else if(userData.swordType === 'red') icon.style.backgroundColor = '#ef4444';
+            if (icon) {
+                icon.className = `w-6 h-6 rounded-full glow-${userData.swordType === 'white' ? 'white' : userData.swordType === 'black' ? 'black' : userData.swordType}`;
+                if(userData.swordType === 'white') icon.style.backgroundColor = '#ffffff';
+                else if(userData.swordType === 'black') icon.style.backgroundColor = '#333333';
+                else if(userData.swordType === 'blue') icon.style.backgroundColor = '#3b82f6';
+                else if(userData.swordType === 'purple') icon.style.backgroundColor = '#a855f7';
+                else if(userData.swordType === 'green') icon.style.backgroundColor = '#22c55e';
+                else if(userData.swordType === 'red') icon.style.backgroundColor = '#ef4444';
+            }
 
             const lockBanner = document.getElementById('lock-banner');
             const actionButtons = document.getElementById('action-buttons');
@@ -324,16 +373,15 @@
                 actionButtons.classList.remove('hidden');
             }
 
-            // Авто-выдача медали 2026, если прошел все 30 дней без срывов
             checkAndAward2026Medal();
-
             renderMedals();
             renderCalendar();
             renderGuild();
+            loadGuildsAndLeaderboard();
         }
 
         function checkAndAward2026Medal() {
-            let completedCount = Object.values(userData.statusHistory).filter(v => v === true).length;
+            let completedCount = Object.values(userData.statusHistory || {}).filter(v => v === true).length;
             if (completedCount >= 30 && !userData.isFailed) {
                 if (!userData.medals.includes('2026')) {
                     userData.medals.push('2026');
@@ -360,7 +408,6 @@
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid');
             grid.innerHTML = '';
-            let completedCount = 0;
 
             for (let i = 1; i <= 30; i++) {
                 const dayStatus = userData.statusHistory[i];
@@ -368,7 +415,6 @@
                 
                 if (dayStatus === true) {
                     bgClass = 'bg-blue-950/60 border-blue-600 text-blue-300 glow-blue';
-                    completedCount++;
                 } else if (dayStatus === false) {
                     bgClass = 'bg-red-950/60 border-red-600 text-red-300 glow-red';
                 }
@@ -379,13 +425,14 @@
                 grid.appendChild(dayEl);
             }
 
+            let completedCount = Object.values(userData.statusHistory || {}).filter(v => v === true).length;
             document.getElementById('streak-counter').innerText = `Успешно: ${completedCount} / 30`;
         }
 
         function renderGuild() {
             const guildInfo = document.getElementById('guild-info');
             if (userData.guild) {
-                guildInfo.innerText = `Гильдия: ${userData.guild}`;
+                guildInfo.innerText = `Гильдия: ${userData.guild} [${userData.guildTag}]`;
             } else {
                 guildInfo.innerText = `Ты не состоишь в гильдии.`;
             }
@@ -403,6 +450,7 @@
                 targetDay = i;
             }
 
+            if(!userData.statusHistory) userData.statusHistory = {};
             userData.statusHistory[targetDay] = success;
             
             if (success) {
@@ -420,23 +468,18 @@
 
         window.setCustomTag = async function() {
             let tagInput = document.getElementById('custom-tag-input').value.trim().toUpperCase();
-            if (!tagInput) {
-                alert('Введи тег!');
-                return;
-            }
-            if (tagInput.length > 4) {
-                alert('Максимум 4 символа в теге!');
+            if (!tagInput || tagInput.length > 4) {
+                alert('Тег должен быть от 1 до 4 символов!');
                 return;
             }
 
-            // Проверка по банворд-листу
             const isBanned = BANWORDS.some(word => tagInput.includes(word));
             if (isBanned) {
-                alert('🚫 Этот тег заблокирован системой безопасности Ордена (банворд-лист)!');
+                alert('🚫 Этот тег заблокирован системой безопасности Ордена!');
                 return;
             }
 
-            userData.tag = `[${tagInput}]`;
+            userData.tag = tagInput;
             await updateDoc(doc(db, "users", currentUsername), userData);
             showApp();
             alert('Кастомный тег успешно установлен!');
@@ -444,11 +487,20 @@
 
         window.createGuild = async function() {
             const guildName = document.getElementById('guild-name-input').value.trim();
-            if (!guildName) return alert('Введи название гильдии!');
+            const guildTag = document.getElementById('guild-tag-input').value.trim().toUpperCase();
+            const guildAvatar = document.getElementById('guild-avatar-input').value.trim();
+
+            if (!guildName || !guildTag) return alert('Введи название и тег гильдии!');
+            if (guildTag.length > 4) return alert('Тег гильдии максимум 4 символа!');
             if (userData.coins < 300) return alert('Создание гильдии стоит 300 кредитов!');
+
+            const isBanned = BANWORDS.some(word => guildTag.includes(word));
+            if (isBanned) return alert('🚫 В теге гильдии запрещенное слово!');
 
             userData.coins -= 300;
             userData.guild = guildName;
+            userData.guildTag = guildTag;
+            userData.guildAvatar = guildAvatar;
 
             await updateDoc(doc(db, "users", currentUsername), userData);
             showApp();
@@ -456,7 +508,7 @@
         }
 
         window.adminResetAllData = async function() {
-            if (confirm('Сбросить документ профиля в Firebase?')) {
+            if (confirm('Сбросить профиль в Firebase?')) {
                 await deleteDoc(doc(db, "users", currentUsername));
                 localStorage.removeItem('nnn_username');
                 location.reload();
