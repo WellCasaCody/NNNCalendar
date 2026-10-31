@@ -97,7 +97,7 @@
         <!-- ШАГ 2: ПАНЕЛЬ УПРАВЛЕНИЯ -->
         <div id="app-screen" class="w-full hidden flex flex-col space-y-6">
             
-            <!-- ПРОФИЛЬ С ФОРМАТОМ НИКА [ТЕГ ГИЛЬДИИ] [ТВОЙ ТЕГ] Ник -->
+            <!-- ПРОФИЛЬ -->
             <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl flex flex-col space-y-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
@@ -158,7 +158,7 @@
 
             <!-- КАСТОМНЫЙ ТЕГ И УПРАВЛЕНИЕ ГИЛЬДИЕЙ -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- ТЕГ (ДО 4 СИМВОЛОВ С БАНВОРДАМИ) -->
+                <!-- ТЕГ -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
                         <h4 class="font-orbitron font-bold text-xs text-pink-400 mb-1">🏷️ СВОЙ ТЕГ (МАКС. 4 СИМВОЛА)</h4>
@@ -170,7 +170,7 @@
                     </div>
                 </div>
 
-                <!-- ГИЛЬДИИ С АВАТАРКОЙ И ТЕГОМ -->
+                <!-- ГИЛЬДИИ -->
                 <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 shadow-xl flex flex-col justify-between">
                     <div>
                         <h4 class="font-orbitron font-bold text-xs text-blue-400 mb-1">🛡️ ГИЛЬДИЯ (ТЕГ И АВАТАРКА)</h4>
@@ -226,13 +226,13 @@
 
         let currentUsername = localStorage.getItem('nnn_username') || '';
         let userData = null;
-        let globalGuildsData = {};
 
         const setupScreen = document.getElementById('setup-screen');
         const appScreen = document.getElementById('app-screen');
         const usernameInput = document.getElementById('username-input');
         const passwordContainer = document.getElementById('password-container');
 
+        // Исправлено: привязка к любому регистру (k1zo / K1ZO)
         usernameInput.addEventListener('input', (e) => {
             if (e.target.value.trim().toLowerCase() === 'k1zo') {
                 passwordContainer.classList.remove('hidden');
@@ -300,31 +300,34 @@
         }
 
         async function loadGuildsAndLeaderboard() {
-            const querySnapshot = await getDocs(collection(db, "users"));
-            const leaderboardList = document.getElementById('leaderboard-list');
-            leaderboardList.innerHTML = '';
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                const leaderboardList = document.getElementById('leaderboard-list');
+                leaderboardList.innerHTML = '';
 
-            let users = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                let completedCount = Object.values(data.statusHistory || {}).filter(v => v === true).length;
-                users.push({ name: data.name, coins: data.coins || 0, streak: completedCount, tag: data.tag, guildTag: data.guildTag });
-            });
+                let users = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    let completedCount = Object.values(data.statusHistory || {}).filter(v => v === true).length;
+                    users.push({ name: data.name, coins: data.coins || 0, streak: completedCount, tag: data.tag, guildTag: data.guildTag });
+                });
 
-            // Сортировка по успешным дням и кредитам
-            users.sort((a, b) => b.streak - a.streak || b.coins - a.coins);
+                users.sort((a, b) => b.streak - a.streak || b.coins - a.coins);
 
-            users.forEach((u, index) => {
-                const row = document.createElement('div');
-                row.className = 'flex justify-between items-center bg-gray-950 p-2 rounded-xl border border-gray-800';
-                const gTagStr = u.guildTag ? `[${u.guildTag}] ` : '';
-                const uTagStr = u.tag ? `[${u.tag}] ` : '';
-                row.innerHTML = `
-                    <span class="text-gray-300">#${index + 1} ${gTagStr}${uTagStr}${u.name}</span>
-                    <span class="text-yellow-400">🛡️ ${u.streak} дней | 🪙 ${u.coins}</span>
-                `;
-                leaderboardList.appendChild(row);
-            });
+                users.forEach((u, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'flex justify-between items-center bg-gray-950 p-2 rounded-xl border border-gray-800';
+                    const gTagStr = u.guildTag ? `[${u.guildTag}] ` : '';
+                    const uTagStr = u.tag ? `[${u.tag}] ` : '';
+                    row.innerHTML = `
+                        <span class="text-gray-300">#${index + 1} ${gTagStr}${uTagStr}${u.name}</span>
+                        <span class="text-yellow-400">🛡️ ${u.streak} дн | 🪙 ${u.coins}</span>
+                    `;
+                    leaderboardList.appendChild(row);
+                });
+            } catch (err) {
+                console.error("Ошибка загрузки лидерборда:", err);
+            }
         }
 
         function showApp() {
@@ -333,14 +336,12 @@
 
             const isAdmin = (userData.name.toLowerCase() === 'k1zo' && userData.tag === 'DEV');
             
-            // Формат никнейма: [ТЕГ ГИЛЬДИИ] [ТВОЙ ТЕГ] Ник
             const gTagPart = userData.guildTag ? `[${userData.guildTag}] ` : '[----] ';
             const uTagPart = userData.tag ? `[${userData.tag}] ` : '[---] ';
             document.getElementById('profile-display-name').innerText = `${gTagPart}${uTagPart}${userData.name}`;
             document.getElementById('profile-rank').innerText = `Статус: ${userData.rankTitle}`;
             document.getElementById('profile-coins').innerText = userData.coins;
 
-            // Аватарка гильдии
             const avatarBox = document.getElementById('profile-guild-avatar');
             if (userData.guildAvatar) {
                 avatarBox.innerHTML = `<img src="${userData.guildAvatar}" class="w-full h-full object-cover">`;
